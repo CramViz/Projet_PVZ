@@ -1,0 +1,10 @@
+/Users/vicram/Downloads/projet_pvz/src/main/java/com/oxyl/coursepfback/model/Zombie.java
+/Users/vicram/Downloads/projet_pvz/src/main/java/com/oxyl/coursepfback/repository/ZombieRepository.java
+/Users/vicram/Downloads/projet_pvz/src/main/java/com/oxyl/coursepfback/controller/ZombieController.java
+/Users/vicram/Downloads/projet_pvz/src/main/java/com/oxyl/coursepfback/config/DatabaseConfig.java
+/Users/vicram/Downloads/projet_pvz/src/main/java/com/oxyl/coursepfback/model/Plante.java
+/Users/vicram/Downloads/projet_pvz/src/main/java/com/oxyl/coursepfback/Main.java
+/Users/vicram/Downloads/projet_pvz/src/main/java/com/oxyl/coursepfback/service/PlanteService.java
+/Users/vicram/Downloads/projet_pvz/src/main/java/com/oxyl/coursepfback/service/ZombieService.java
+/Users/vicram/Downloads/projet_pvz/src/main/java/com/oxyl/coursepfback/repository/PlanteRepository.java
+/Users/vicram/Downloads/projet_pvz/src/main/java/com/oxyl/coursepfback/controller/PlanteController.java

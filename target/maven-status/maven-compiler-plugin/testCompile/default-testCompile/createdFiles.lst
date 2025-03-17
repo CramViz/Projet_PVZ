@@ -1,0 +1,5 @@
+com/oxyl/coursepfback/repository/PlanteRepositoryTest.class
+com/oxyl/coursepfback/controller/PlanteControllerTest.class
+com/oxyl/coursepfback/service/ZombieServiceTest.class
+com/oxyl/coursepfback/service/PlanteServiceTest.class
+com/oxyl/coursepfback/repository/ZombieRepositoryTest.class
