@@ -48,9 +48,24 @@ public class ZombieRepository {
 
 
     public boolean update(Zombie zombie) {
+        // Si chemin_image est null, on lui attribue une valeur par défaut
+        if (zombie.getCheminImage() == null) {
+            zombie.setCheminImage("/images/zombies/default.png");
+        }
+
         String sql = "UPDATE zombie SET nom = ?, point_de_vie = ?, attaque_par_seconde = ?, degat_attaque = ?, vitesse_de_deplacement = ?, chemin_image = ?, id_map = ? WHERE id = ?";
-        return jdbcTemplate.update(sql, zombie.getNom(), zombie.getPointDeVie(), zombie.getAttaqueParSeconde(), zombie.getDegatAttaque(), zombie.getVitesseDeplacement(), zombie.getCheminImage(), zombie.getIdMap(), zombie.getId()) > 0;
+        return jdbcTemplate.update(sql,
+                zombie.getNom(),
+                zombie.getPointDeVie(),
+                zombie.getAttaqueParSeconde(),
+                zombie.getDegatAttaque(),
+                zombie.getVitesseDeplacement(),
+                zombie.getCheminImage(),
+                zombie.getIdMap(),
+                zombie.getId()) > 0;
     }
+
+
 
 
     public boolean delete(int id) {

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/plantes")
@@ -21,14 +22,12 @@ public class PlanteController {
     @Autowired
     private PlanteService planteService;
 
-
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Plante>> getAllPlantes() {
         logger.info("🔍 Récupération de toutes les plantes...");
         List<Plante> plantes = planteService.getAllPlantes();
         return ResponseEntity.ok(plantes);
     }
-
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Plante> getPlanteById(@PathVariable("id") int id) {
@@ -39,7 +38,6 @@ public class PlanteController {
             return ResponseEntity.notFound().build();
         });
     }
-
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> addPlante(@RequestBody Plante plante) {
@@ -53,10 +51,10 @@ public class PlanteController {
         }
     }
 
-
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> updatePlante(@PathVariable("id") int id, @RequestBody Plante plante) {
         logger.info("🔄 Mise à jour de la plante avec ID: {}", id);
+        logger.info("🪴 Données reçues : {}", plante);
         plante.setId(id);
         boolean success = planteService.updatePlante(plante);
         if (success) {
@@ -66,7 +64,6 @@ public class PlanteController {
             return ResponseEntity.status(500).body("Erreur lors de la mise à jour");
         }
     }
-
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deletePlante(@PathVariable("id") int id) {
@@ -78,5 +75,35 @@ public class PlanteController {
             logger.error(" Erreur lors de la suppression de la plante !");
             return ResponseEntity.status(500).build();
         }
+    }
+
+    // Validation du format des plantes
+    @GetMapping(value = "/validation", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> validatePlantes() {
+        logger.info("🔍 Validation des données des plantes...");
+
+        // Récupérer toutes les plantes
+        List<Plante> plantes = planteService.getAllPlantes();
+
+        // Liste pour stocker les erreurs de validation
+        List<String> erreurs = new ArrayList<>();
+
+        // Vérifier chaque plante
+        for (int i = 0; i < plantes.size(); i++) {
+            Plante plante = plantes.get(i);
+
+            // Vérifier que chaque plante possède un champ 'id_plante'
+            if (plante.getId() == null) {
+                erreurs.add("Plante #" + i + ": champ 'id_plante' manquant");
+            }
+        }
+
+        // Si des erreurs sont trouvées, retourner un message avec les erreurs
+        if (!erreurs.isEmpty()) {
+            return ResponseEntity.status(400).body("Erreurs de validation: " + String.join(", ", erreurs));
+        }
+
+        // Si tout est valide
+        return ResponseEntity.ok("Toutes les plantes sont valides");
     }
 }

@@ -3,26 +3,27 @@ package com.oxyl.coursepfback.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Plante {
+
     @JsonProperty("id")
-    private int id;
+    private Integer id;
 
     @JsonProperty("nom")
     private String nom;
 
     @JsonProperty("point_de_vie")
-    private int pointDeVie;
+    private Integer pointDeVie;
 
     @JsonProperty("attaque_par_seconde")
-    private double attaqueParSeconde;
+    private Double attaqueParSeconde;
 
     @JsonProperty("degat_attaque")
-    private int degatAttaque;
+    private Integer degatAttaque;
 
     @JsonProperty("cout")
-    private int cout;
+    private Integer cout;
 
     @JsonProperty("soleil_par_seconde")
-    private double soleilParSeconde;
+    private Double soleilParSeconde;
 
     @JsonProperty("effet")
     private String effet;
@@ -30,12 +31,9 @@ public class Plante {
     @JsonProperty("chemin_image")
     private String cheminImage;
 
-
-    // 🔹 Constructeur vide (obligatoire pour Spring JDBC)
     public Plante() {}
 
-    // 🔹 Constructeur avec tous les paramètres
-    public Plante(int id, String nom, int pointDeVie, double attaqueParSeconde, int degatAttaque, int cout, double soleilParSeconde, String effet, String cheminImage) {
+    public Plante(Integer id, String nom, Integer pointDeVie, Double attaqueParSeconde, Integer degatAttaque, Integer cout, Double soleilParSeconde, String effet, String cheminImage) {
         this.id = id;
         this.nom = nom;
         this.pointDeVie = pointDeVie;
@@ -47,31 +45,45 @@ public class Plante {
         this.cheminImage = cheminImage;
     }
 
-    // 🔹 Getters et Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
 
     public String getNom() { return nom; }
     public void setNom(String nom) { this.nom = nom; }
 
-    public int getPointDeVie() { return pointDeVie; }
-    public void setPointDeVie(int pointDeVie) { this.pointDeVie = pointDeVie; }
+    public Integer getPointDeVie() { return pointDeVie; }
+    public void setPointDeVie(Integer pointDeVie) { this.pointDeVie = pointDeVie; }
 
-    public double getAttaqueParSeconde() { return attaqueParSeconde; }
-    public void setAttaqueParSeconde(double attaqueParSeconde) { this.attaqueParSeconde = attaqueParSeconde; }
+    public Double getAttaqueParSeconde() { return attaqueParSeconde; }
+    public void setAttaqueParSeconde(Double attaqueParSeconde) { this.attaqueParSeconde = attaqueParSeconde; }
 
-    public int getDegatAttaque() { return degatAttaque; }
-    public void setDegatAttaque(int degatAttaque) { this.degatAttaque = degatAttaque; }
+    public Integer getDegatAttaque() { return degatAttaque; }
+    public void setDegatAttaque(Integer degatAttaque) { this.degatAttaque = degatAttaque; }
 
-    public int getCout() { return cout; }
-    public void setCout(int cout) { this.cout = cout; }
+    public Integer getCout() { return cout; }
+    public void setCout(Integer cout) { this.cout = cout; }
 
-    public double getSoleilParSeconde() { return soleilParSeconde; }
-    public void setSoleilParSeconde(double soleilParSeconde) { this.soleilParSeconde = soleilParSeconde; }
+    public Double getSoleilParSeconde() { return soleilParSeconde; }
+    public void setSoleilParSeconde(Double soleilParSeconde) { this.soleilParSeconde = soleilParSeconde; }
 
     public String getEffet() { return effet; }
     public void setEffet(String effet) { this.effet = effet; }
 
     public String getCheminImage() { return cheminImage; }
     public void setCheminImage(String cheminImage) { this.cheminImage = cheminImage; }
+
+    @Override
+    public String toString() {
+        return "Plante{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", pointDeVie=" + pointDeVie +
+                ", attaqueParSeconde=" + attaqueParSeconde +
+                ", degatAttaque=" + degatAttaque +
+                ", cout=" + cout +
+                ", soleilParSeconde=" + soleilParSeconde +
+                ", effet='" + effet + '\'' +
+                ", cheminImage='" + cheminImage + '\'' +
+                '}';
+    }
 }

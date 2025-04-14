@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.ArrayList;
 
 @Repository
 public class PlanteRepository {
@@ -59,19 +60,60 @@ public class PlanteRepository {
 
 
     public int update(Plante plante) {
-        String sql = "UPDATE Plante SET nom=?, point_de_vie=?, attaque_par_seconde=?, degat_attaque=?, cout=?, soleil_par_seconde=?, effet=?, chemin_image=? WHERE id=?";
-        return jdbcTemplate.update(sql,
-                plante.getNom(),
-                plante.getPointDeVie(),
-                plante.getAttaqueParSeconde(),
-                plante.getDegatAttaque(),
-                plante.getCout(),
-                plante.getSoleilParSeconde(),
-                plante.getEffet(),
-                plante.getCheminImage(),
-                plante.getId()
-        );
+        StringBuilder sql = new StringBuilder("UPDATE Plante SET ");
+        List<Object> params = new ArrayList<>();
+
+        if (plante.getNom() != null) {
+            sql.append("nom = ?, ");
+            params.add(plante.getNom());
+        }
+        if (plante.getPointDeVie() != null) {
+            sql.append("point_de_vie = ?, ");
+            params.add(plante.getPointDeVie());
+        }
+        if (plante.getAttaqueParSeconde() != null) {
+            sql.append("attaque_par_seconde = ?, ");
+            params.add(plante.getAttaqueParSeconde());
+        }
+        if (plante.getDegatAttaque() != null) {
+            sql.append("degat_attaque = ?, ");
+            params.add(plante.getDegatAttaque());
+        }
+        if (plante.getCout() != null) {
+            sql.append("cout = ?, ");
+            params.add(plante.getCout());
+        }
+        if (plante.getSoleilParSeconde() != null) {
+            sql.append("soleil_par_seconde = ?, ");
+            params.add(plante.getSoleilParSeconde());
+        }
+        if (plante.getEffet() != null) {
+            sql.append("effet = ?, ");
+            params.add(plante.getEffet());
+        }
+        if (plante.getCheminImage() != null) {
+            sql.append("chemin_image = ?, ");
+            params.add(plante.getCheminImage());
+        }
+
+        if (params.isEmpty()) {
+            return 0; // Rien à mettre à jour
+        }
+
+        sql.setLength(sql.length() - 2); // Supprime la dernière virgule
+        sql.append(" WHERE id = ?");
+        params.add(plante.getId());
+
+        try {
+            System.out.println("🛠️ SQL UPDATE => " + sql);
+            return jdbcTemplate.update(sql.toString(), params.toArray());
+        } catch (Exception e) {
+            System.err.println("❌ Erreur lors de l'update partiel : " + e.getMessage());
+            e.printStackTrace();
+            return 0;
+        }
     }
+
 
 
     public int deleteById(int id) {
