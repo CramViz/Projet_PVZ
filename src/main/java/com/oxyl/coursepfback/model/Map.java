@@ -16,10 +16,10 @@ public class Map {
     @JsonProperty("chemin_image")
     private String cheminImage;
 
-    // 🔹 Constructeur vide (requis pour Spring JDBC)
+    //  Constructeur vide (requis pour Spring JDBC)
     public Map() {}
 
-    // 🔹 Constructeur avec tous les paramètres
+    //  Constructeur avec tous les paramètres
     public Map(int idMap, int ligne, int colonne, String cheminImage) {
         this.idMap = idMap;
         this.ligne = ligne;
@@ -27,7 +27,7 @@ public class Map {
         this.cheminImage = cheminImage;
     }
 
-    // 🔹 Getters et Setters
+    //  Getters et Setters
     public int getIdMap() {
         return idMap;
     }

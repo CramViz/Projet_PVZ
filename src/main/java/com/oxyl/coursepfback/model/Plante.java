@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Plante {
 
-    @JsonProperty("id")
+    @JsonProperty("id_plante")
     private Integer id;
 
     @JsonProperty("nom")

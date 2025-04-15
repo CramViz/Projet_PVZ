@@ -18,7 +18,7 @@ public class PlanteRepository {
 
 
     private RowMapper<Plante> planteRowMapper = (rs, rowNum) -> new Plante(
-            rs.getInt("id"),
+            rs.getInt("id_plante"),
             rs.getString("nom"),
             rs.getInt("point_de_vie"),
             rs.getDouble("attaque_par_seconde"),
@@ -101,7 +101,7 @@ public class PlanteRepository {
         }
 
         sql.setLength(sql.length() - 2); // Supprime la dernière virgule
-        sql.append(" WHERE id = ?");
+        sql.append(" WHERE id_plante = ?");
         params.add(plante.getId());
 
         try {

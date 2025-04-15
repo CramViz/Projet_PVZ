@@ -17,7 +17,7 @@ public class ZombieRepository {
 
 
     private final RowMapper<Zombie> zombieRowMapper = (rs, rowNum) -> new Zombie(
-            rs.getInt("id"),
+            rs.getInt("id_zombie"),
             rs.getString("nom"),
             rs.getInt("point_de_vie"),
             rs.getDouble("attaque_par_seconde"),
@@ -53,7 +53,7 @@ public class ZombieRepository {
             zombie.setCheminImage("/images/zombies/default.png");
         }
 
-        String sql = "UPDATE zombie SET nom = ?, point_de_vie = ?, attaque_par_seconde = ?, degat_attaque = ?, vitesse_de_deplacement = ?, chemin_image = ?, id_map = ? WHERE id = ?";
+        String sql = "UPDATE zombie SET nom = ?, point_de_vie = ?, attaque_par_seconde = ?, degat_attaque = ?, vitesse_de_deplacement = ?, chemin_image = ?, id_map = ? WHERE id_zombie = ?";
         return jdbcTemplate.update(sql,
                 zombie.getNom(),
                 zombie.getPointDeVie(),

@@ -8,7 +8,7 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!-- ⛳️ Dis que Spring doit scanner ce package -->
+
     <context:component-scan base-package="com.oxyl.coursepfback.config" />
 
 </beans>

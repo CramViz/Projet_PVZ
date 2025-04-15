@@ -21,7 +21,7 @@ public class MapController {
     @Autowired
     private MapService mapService;
 
-    // 🔍 GET all
+    //  GET all
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Map>> getAllCases() {
         logger.info("📥 Récupération de toutes les cases de la map...");
@@ -29,7 +29,7 @@ public class MapController {
         return ResponseEntity.ok(cases);
     }
 
-    // 🔍 GET by ID
+    //  GET by ID
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map> getCaseById(@PathVariable int id) {
         logger.info("📥 Récupération de la case avec ID: {}", id);
@@ -41,7 +41,7 @@ public class MapController {
                 });
     }
 
-    // ➕ POST (ajout)
+    //  POST (ajout)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> addCase(@RequestBody Map mapCase) {
         logger.info("➕ Ajout d'une nouvelle case à la map (ligne: {}, colonne: {})", mapCase.getLigne(), mapCase.getColonne());
@@ -54,7 +54,7 @@ public class MapController {
         }
     }
 
-    // 🔄 PUT (mise à jour)
+    //  PUT (mise à jour)
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> updateCase(@PathVariable int id, @RequestBody Map mapCase) {
         logger.info("🔄 Mise à jour de la case avec ID: {}", id);
@@ -68,7 +68,7 @@ public class MapController {
         }
     }
 
-    // 🗑️ DELETE
+    // ️ DELETE
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteCase(@PathVariable int id) {
         logger.info("🗑️ Suppression de la case avec ID: {}", id);

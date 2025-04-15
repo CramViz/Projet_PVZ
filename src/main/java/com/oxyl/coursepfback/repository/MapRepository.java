@@ -22,20 +22,20 @@ public class MapRepository {
             rs.getString("chemin_image")
     );
 
-    // 🔍 Get all cases
+    //  Get all cases
     public List<Map> findAll() {
         String sql = "SELECT * FROM Map";
         return jdbcTemplate.query(sql, mapRowMapper);
     }
 
-    // 🔍 Get case by ID
+    //  Get case by ID
     public Optional<Map> findById(int id) {
         String sql = "SELECT * FROM Map WHERE id_map = ?";
         List<Map> result = jdbcTemplate.query(sql, mapRowMapper, id);
         return result.stream().findFirst();
     }
 
-    // ➕ Add case
+    //  Add case
     public boolean save(Map mapCase) {
         String sql = "INSERT INTO Map (ligne, colonne, chemin_image) VALUES (?, ?, ?)";
         return jdbcTemplate.update(sql,
@@ -45,8 +45,8 @@ public class MapRepository {
         ) > 0;
     }
 
-    // 🔄 Update case
-    // 🔄 Update case
+    //  Update case
+
     public boolean update(Map mapCase) {
         // Vérifier si chemin_image est null, et utiliser une valeur par défaut si c'est le cas
         if (mapCase.getCheminImage() == null) {
@@ -63,13 +63,13 @@ public class MapRepository {
     }
 
 
-    // 🗑️ Delete case
+    //  Delete case
     public boolean delete(int id) {
         String sql = "DELETE FROM Map WHERE id_map = ?";
         return jdbcTemplate.update(sql, id) > 0;
     }
 
-    // 📍 Facultatif : récupérer par coordonnées ligne + colonne
+    //  récupérer par coordonnées ligne + colonne
     public Optional<Map> findByLigneAndColonne(int ligne, int colonne) {
         String sql = "SELECT * FROM Map WHERE ligne = ? AND colonne = ?";
         List<Map> result = jdbcTemplate.query(sql, mapRowMapper, ligne, colonne);

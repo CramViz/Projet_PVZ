@@ -14,32 +14,32 @@ public class MapService {
     @Autowired
     private MapRepository mapRepository;
 
-    // 🔹 Récupérer toutes les cases
+    //  Récupérer toutes les cases
     public List<Map> getAllCases() {
         return mapRepository.findAll();
     }
 
-    // 🔹 Récupérer une case par ID
+    //  Récupérer une case par ID
     public Optional<Map> getCaseById(int id) {
         return mapRepository.findById(id);
     }
 
-    // 🔹 Ajouter une nouvelle case
+    //  Ajouter une nouvelle case
     public boolean addCase(Map mapCase) {
         return mapRepository.save(mapCase);
     }
 
-    // 🔹 Mettre à jour une case existante
+    //  Mettre à jour une case existante
     public boolean updateCase(Map mapCase) {
         return mapRepository.update(mapCase);
     }
 
-    // 🔹 Supprimer une case par ID
+    //  Supprimer une case par ID
     public boolean deleteCase(int id) {
         return mapRepository.delete(id);
     }
 
-    // 🔹 (Facultatif) Rechercher une case par coordonnées
+    //   Rechercher une case par coordonnées
     public Optional<Map> getCaseByCoord(int ligne, int colonne) {
         return mapRepository.findByLigneAndColonne(ligne, colonne);
     }
