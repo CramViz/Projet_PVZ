@@ -106,4 +106,8 @@ public class PlanteController {
         // Si tout est valide
         return ResponseEntity.ok("Toutes les plantes sont valides");
     }
+
+    public void setPlanteService(PlanteService planteService) {
+        this.planteService = planteService;
+    }
 }

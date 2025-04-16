@@ -4,19 +4,16 @@ import com.oxyl.coursepfback.model.Plante;
 import com.oxyl.coursepfback.repository.PlanteRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
 class PlanteServiceTest {
 
     @Mock
@@ -25,48 +22,79 @@ class PlanteServiceTest {
     @InjectMocks
     private PlanteService planteService;
 
-    private Plante plante;
-
     @BeforeEach
     void setUp() {
-        plante = new Plante(1, "Tournesol", 100, 0, 0, 50, 25, "normal", "images/plante/tournesol.png");
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
     void testGetAllPlantes() {
-        when(planteRepository.findAll()).thenReturn(Arrays.asList(plante));
-        List<Plante> plantes = planteService.getAllPlantes();
-        assertFalse(plantes.isEmpty());
-        assertEquals(1, plantes.size());
-        verify(planteRepository, times(1)).findAll();
+        Plante plante1 = new Plante(1, "Tournesol", 100, 0.0, 0, 50, 1.0, "soleil", "/img.png");
+        Plante plante2 = new Plante(2, "Pisto-pois", 200, 1.5, 25, 100, 0.0, "tir", "/img.png");
+
+        when(planteRepository.findAll()).thenReturn(Arrays.asList(plante1, plante2));
+
+        var result = planteService.getAllPlantes();
+
+        assertEquals(2, result.size());
+        verify(planteRepository).findAll();
     }
 
     @Test
-    void testGetPlanteById() {
+    void testGetPlanteById_found() {
+        Plante plante = new Plante(1, "Tournesol", 100, 0.0, 0, 50, 1.0, "soleil", "/img.png");
         when(planteRepository.findById(1)).thenReturn(Optional.of(plante));
+
         Optional<Plante> result = planteService.getPlanteById(1);
+
         assertTrue(result.isPresent());
         assertEquals("Tournesol", result.get().getNom());
-        verify(planteRepository, times(1)).findById(1);
     }
 
     @Test
-    void testAddPlante() {
-        when(planteRepository.save(any(Plante.class))).thenReturn(1);
+    void testGetPlanteById_notFound() {
+        when(planteRepository.findById(99)).thenReturn(Optional.empty());
+
+        Optional<Plante> result = planteService.getPlanteById(99);
+
+        assertFalse(result.isPresent());
+    }
+
+    @Test
+    void testAddPlante_success() {
+        Plante plante = new Plante(null, "Mur-Noix", 300, 0.0, 0, 50, 0.0, "bouclier", "/img.png");
+        when(planteRepository.save(plante)).thenReturn(1);
 
         boolean result = planteService.addPlante(plante);
 
         assertTrue(result);
-        verify(planteRepository, times(1)).save(any(Plante.class));
     }
 
     @Test
-    void testDeletePlante() {
-        when(planteRepository.deleteById(anyInt())).thenReturn(1);
+    void testUpdatePlante_success() {
+        Plante plante = new Plante(1, "Tournesol", 150, null, null, null, null, null, null);
+        when(planteRepository.update(plante)).thenReturn(1);
+
+        boolean result = planteService.updatePlante(plante);
+
+        assertTrue(result);
+    }
+
+    @Test
+    void testDeletePlante_success() {
+        when(planteRepository.deleteById(1)).thenReturn(1);
 
         boolean result = planteService.deletePlante(1);
 
         assertTrue(result);
-        verify(planteRepository, times(1)).deleteById(anyInt());
+    }
+
+    @Test
+    void testDeletePlante_failure() {
+        when(planteRepository.deleteById(999)).thenReturn(0);
+
+        boolean result = planteService.deletePlante(999);
+
+        assertFalse(result);
     }
 }

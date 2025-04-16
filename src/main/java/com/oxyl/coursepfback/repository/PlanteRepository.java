@@ -120,4 +120,8 @@ public class PlanteRepository {
         String sql = "DELETE FROM Plante WHERE id = ?";
         return jdbcTemplate.update(sql, id);
     }
+
+    public PlanteRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 }

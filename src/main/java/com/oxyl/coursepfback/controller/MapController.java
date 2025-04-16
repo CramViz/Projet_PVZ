@@ -80,4 +80,8 @@ public class MapController {
             return ResponseEntity.status(500).body("Erreur");
         }
     }
+
+    public void setMapService(MapService mapService) {
+        this.mapService = mapService;
+    }
 }

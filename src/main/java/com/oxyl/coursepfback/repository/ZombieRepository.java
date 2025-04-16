@@ -72,4 +72,9 @@ public class ZombieRepository {
         String sql = "DELETE FROM zombie WHERE id = ?";
         return jdbcTemplate.update(sql, id) > 0;
     }
+
+    public ZombieRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
 }

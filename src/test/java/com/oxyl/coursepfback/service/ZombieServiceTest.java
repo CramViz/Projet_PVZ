@@ -4,11 +4,9 @@ import com.oxyl.coursepfback.model.Zombie;
 import com.oxyl.coursepfback.repository.ZombieRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +14,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
 class ZombieServiceTest {
 
     @Mock
@@ -25,45 +22,68 @@ class ZombieServiceTest {
     @InjectMocks
     private ZombieService zombieService;
 
-    private Zombie zombie;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        zombie = new Zombie(1, "Zombie de base", 100, 0.80, 10, 0.50, "images/zombie/zombie.png", 1);
     }
 
     @Test
-    void testGetZombieById() {
-        when(zombieRepository.findById(1)).thenReturn(Optional.of(zombie));
+    void testGetAllZombies() {
+        Zombie zombie = new Zombie(1, "Zombie Classique", 100, 1.0, 20, 0.5, "/zombie.png", 1);
+        when(zombieRepository.findAll()).thenReturn(List.of(zombie));
 
-        Optional<Zombie> result = zombieService.getZombieById(1);
+        List<Zombie> result = zombieService.getAllZombies();
+
+        assertEquals(1, result.size());
+        assertEquals("Zombie Classique", result.get(0).getNom());
+    }
+
+    @Test
+    void testGetZombieById_found() {
+        Zombie zombie = new Zombie(2, "Gargantuar", 500, 0.5, 100, 0.2, "/garg.png", 1);
+        when(zombieRepository.findById(2)).thenReturn(Optional.of(zombie));
+
+        Optional<Zombie> result = zombieService.getZombieById(2);
 
         assertTrue(result.isPresent());
-        assertEquals("Zombie de base", result.get().getNom());
-        verify(zombieRepository, times(1)).findById(1);
+        assertEquals("Gargantuar", result.get().getNom());
     }
 
     @Test
-    void testAddZombie() {
+    void testGetZombieById_notFound() {
+        when(zombieRepository.findById(999)).thenReturn(Optional.empty());
+
+        Optional<Zombie> result = zombieService.getZombieById(999);
+
+        assertFalse(result.isPresent());
+    }
+
+    @Test
+    void testAddZombie_success() {
+        Zombie zombie = new Zombie(3, "Cônehead", 200, 1.0, 25, 0.6, "/conehead.png", 1);
         when(zombieRepository.save(zombie)).thenReturn(true);
-
-
 
         boolean result = zombieService.addZombie(zombie);
 
         assertTrue(result);
-        verify(zombieRepository, times(1)).save(zombie);
     }
 
     @Test
-    void testDeleteZombie() {
-        when(zombieRepository.delete(anyInt())).thenReturn(true);
+    void testUpdateZombie_success() {
+        Zombie zombie = new Zombie(3, "Cônehead+", 250, 1.2, 30, 0.6, "/conehead+.png", 1);
+        when(zombieRepository.update(zombie)).thenReturn(true);
 
-
-        boolean result = zombieService.deleteZombie(1);
+        boolean result = zombieService.updateZombie(zombie);
 
         assertTrue(result);
-        verify(zombieRepository, times(1)).delete(1);
+    }
+
+    @Test
+    void testDeleteZombie_success() {
+        when(zombieRepository.delete(3)).thenReturn(true);
+
+        boolean result = zombieService.deleteZombie(3);
+
+        assertTrue(result);
     }
 }

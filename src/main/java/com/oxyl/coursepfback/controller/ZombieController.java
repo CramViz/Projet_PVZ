@@ -45,4 +45,9 @@ public class ZombieController {
     public ResponseEntity<String> deleteZombie(@PathVariable int id) {
         return zombieService.deleteZombie(id) ? ResponseEntity.ok("Zombie supprimé !") : ResponseEntity.status(500).body("Erreur");
     }
+
+    public void setZombieService(ZombieService zombieService) {
+        this.zombieService = zombieService;
+    }
+
 }

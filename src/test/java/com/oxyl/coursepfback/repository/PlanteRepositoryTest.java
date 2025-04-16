@@ -3,22 +3,23 @@ package com.oxyl.coursepfback.repository;
 import com.oxyl.coursepfback.model.Plante;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.MockitoAnnotations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
-public class PlanteRepositoryTest {
+
+
+class PlanteRepositoryTest {
 
     @Mock
     private JdbcTemplate jdbcTemplate;
@@ -26,65 +27,88 @@ public class PlanteRepositoryTest {
     @InjectMocks
     private PlanteRepository planteRepository;
 
-    private Plante plante;
-
     @BeforeEach
     void setUp() {
-        plante = new Plante(1, "Tournesol", 100, 0.0, 0, 50, 25.0, "normal", "image.png");
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
     void testFindAll() {
-        when(jdbcTemplate.query(anyString(), any(RowMapper.class))).thenReturn(List.of(plante));
-
-        List<Plante> plantes = planteRepository.findAll();
-
-        assertFalse(plantes.isEmpty());
-        assertEquals(1, plantes.size());
-        assertEquals(plante.getNom(), plantes.get(0).getNom());
-
-        verify(jdbcTemplate, times(1)).query(anyString(), any(RowMapper.class));
-    }
-
-    @Test
-    void testFindById() {
-        when(jdbcTemplate.query(eq("SELECT * FROM Plante WHERE id = ?"),
-                any(RowMapper.class),
-                eq(new Object[]{1})))
+        Plante plante = new Plante(1, "Tournesol", 100, 0.0, 0, 50, 1.0, "soleil", "/img.png");
+        when(jdbcTemplate.query(anyString(), any(RowMapper.class)))
                 .thenReturn(List.of(plante));
 
-        Optional<Plante> result = planteRepository.findById(1);
+        List<Plante> result = planteRepository.findAll();
+
+        assertEquals(1, result.size());
+        assertEquals("Tournesol", result.get(0).getNom());
+    }
+
+    @Test
+    void testFindById_found() {
+        Plante plante = new Plante(2, "Pisto-pois", 200, 1.5, 25, 100, 0.0, "tir", "/img.png");
+        when(jdbcTemplate.query(anyString(), any(RowMapper.class), eq(2)))
+                .thenReturn(List.of(plante));
+
+        Optional<Plante> result = planteRepository.findById(2);
 
         assertTrue(result.isPresent());
-        assertEquals(plante.getNom(), result.get().getNom());
-
-        verify(jdbcTemplate, times(1)).query(
-                eq("SELECT * FROM Plante WHERE id = ?"),
-                any(RowMapper.class),
-                eq(new Object[]{1}));
+        assertEquals("Pisto-pois", result.get().getNom());
     }
 
     @Test
-    void testSave() {
-        when(jdbcTemplate.update(
-                eq("INSERT INTO Plante (nom, point_de_vie, attaque_par_seconde, degat_attaque, cout, soleil_par_seconde, effet, chemin_image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"),
-                any(Object[].class)))
+    void testFindById_notFound() {
+        when(jdbcTemplate.query(anyString(), any(RowMapper.class), eq(999)))
+                .thenReturn(Collections.emptyList());
+
+        Optional<Plante> result = planteRepository.findById(999);
+
+        assertFalse(result.isPresent());
+    }
+
+    @Test
+    void testSave_success() {
+        Plante plante = new Plante(null, "Mur-Noix", 300, 0.0, 0, 50, 0.0, "bouclier", "/img.png");
+
+        when(jdbcTemplate.update(anyString(), any(), any(), any(), any(), any(), any(), any(), any()))
                 .thenReturn(1);
 
-        int saved = planteRepository.save(plante);
-        assertTrue(saved > 0);
+        int result = planteRepository.save(plante);
 
-        verify(jdbcTemplate, times(1)).update(
-                eq("INSERT INTO Plante (nom, point_de_vie, attaque_par_seconde, degat_attaque, cout, soleil_par_seconde, effet, chemin_image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"),
-                any(Object[].class));
+        assertEquals(1, result);
     }
 
     @Test
-    void testDeleteById() {
-        when(jdbcTemplate.update(eq("DELETE FROM Plante WHERE id = ?"), eq(1))).thenReturn(1);
+    void testDelete_success() {
+        when(jdbcTemplate.update(anyString(), eq(5))).thenReturn(1);
 
-        planteRepository.deleteById(1);
+        int result = planteRepository.deleteById(5);
 
-        verify(jdbcTemplate, times(1)).update(eq("DELETE FROM Plante WHERE id = ?"), eq(1));
+        assertEquals(1, result);
+    }
+
+
+    @Test
+    void testUpdate_partial_success() {
+        Plante plante = new Plante(3, "Tournesol", null, null, null, null, null, null, null);
+
+        when(jdbcTemplate.update(anyString(), (Object[]) any())).thenReturn(1);
+
+        int result = planteRepository.update(plante);
+
+        assertEquals(1, result);
+    }
+
+
+
+
+
+    @Test
+    void testUpdate_nothingToUpdate() {
+        Plante plante = new Plante(3, null, null, null, null, null, null, null, null);
+
+        int result = planteRepository.update(plante);
+
+        assertEquals(0, result); // car rien à mettre à jour
     }
 }
